@@ -1,78 +1,47 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    android:background="#F4F4F4">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@android:color/black">
 
-    <!-- Question Text -->
     <TextView
         android:id="@+id/questionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Which country's flag is this?"
-        android:textSize="20sp"
-        android:textColor="#000000"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"/>
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        android:text="Question" />
 
-    <!-- Flag Image -->
-    <ImageView
-        android:id="@+id/flagImage"
-        android:layout_width="250dp"
-        android:layout_height="150dp"
-        android:layout_below="@id/questionText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:scaleType="fitCenter"
-        android:background="@android:color/white"
-        android:elevation="5dp"
-        android:src="@drawable/flag_armenia"/>
-
-    <!-- Answer Buttons -->
     <Button
         android:id="@+id/option1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Option 1"
-        android:textSize="18sp"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#388E3C"
-        android:layout_below="@id/flagImage"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="20dp"/>
 
     <Button
         android:id="@+id/option2"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Option 2"
-        android:textSize="18sp"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#1976D2"
-        android:layout_below="@id/option1"
-        android:layout_marginTop="15dp"/>
+        android:textColor="#800080"
+        android:layout_marginTop="20dp"/>
 
     <Button
         android:id="@+id/option3"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Option 3"
-        android:textSize="18sp"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#D32F2F"
-        android:layout_below="@id/option2"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="20dp"/>
 
     <Button
         android:id="@+id/option4"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Option 4"
-        android:textSize="18sp"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#FBC02D"
-        android:layout_below="@id/option3"
-        android:layout_marginTop="15dp"/>
+        android:textColor="#800080"
+        android:layout_marginTop="20dp"/>
 
-</RelativeLayout>
+</LinearLayout>

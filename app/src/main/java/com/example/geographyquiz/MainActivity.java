@@ -1,77 +1,82 @@
 package com.example.geographyquiz;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-    private ImageView flagImage;
-    private Button option1, option2, option3, option4;
     private TextView questionText;
-
-    // Example questions (You can expand this)
-    private int[] flags = {R.drawable.flag_armenia, R.drawable.flag_france};
-    private String[][] options = {{"Armenia", "France", "Italy", "Germany"},
-            {"Spain", "France", "Brazil", "Japan"}};
-    private int[] correctAnswers = {0, 1}; // Index of the correct option
-    private int currentQuestion = 0;
+    private Button option1, option2, option3, option4;
+    private int correctAnswers = 0;
+    private int incorrectAnswers = 0;
+    private int currentQuestionIndex = 0;
+    private Question[] questions = {
+            new Question("What is the capital of France?", "Paris", "Berlin", "Madrid", "Rome", 1),
+            new Question("Which country has the largest population?", "India", "USA", "China", "Brazil", 3)
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        flagImage = findViewById(R.id.flagImage);
+        getWindow().getDecorView().setBackgroundColor(Color.BLACK);
+
+        questionText = findViewById(R.id.questionText);
         option1 = findViewById(R.id.option1);
         option2 = findViewById(R.id.option2);
         option3 = findViewById(R.id.option3);
         option4 = findViewById(R.id.option4);
-        questionText = findViewById(R.id.questionText);
 
-        loadQuestion();
-
-        View.OnClickListener answerListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Button clickedButton = (Button) v;
-                int selectedIndex = Integer.parseInt(v.getTag().toString());
-                checkAnswer(selectedIndex);
-            }
-        };
-
-        option1.setOnClickListener(answerListener);
-        option2.setOnClickListener(answerListener);
-        option3.setOnClickListener(answerListener);
-        option4.setOnClickListener(answerListener);
+        setOptionsStyle();
+        loadNextQuestion();
     }
 
-    private void loadQuestion() {
-        if (currentQuestion < flags.length) {
-            flagImage.setImageResource(flags[currentQuestion]);
-            option1.setText(options[currentQuestion][0]);
-            option2.setText(options[currentQuestion][1]);
-            option3.setText(options[currentQuestion][2]);
-            option4.setText(options[currentQuestion][3]);
-            option1.setTag("0");
-            option2.setTag("1");
-            option3.setTag("2");
-            option4.setTag("3");
+    private void setOptionsStyle() {
+        option1.setBackgroundColor(Color.parseColor("#800080")); // Purple
+        option2.setBackgroundColor(Color.WHITE);
+        option3.setBackgroundColor(Color.parseColor("#800080")); // Purple
+        option4.setBackgroundColor(Color.WHITE);
+    }
+
+    private void loadNextQuestion() {
+        if (currentQuestionIndex < questions.length) {
+            Question q = questions[currentQuestionIndex];
+            questionText.setText(q.getQuestion());
+            option1.setText(q.getOption1());
+            option2.setText(q.getOption2());
+            option3.setText(q.getOption3());
+            option4.setText(q.getOption4());
+
+            option1.setOnClickListener(v -> checkAnswer(1));
+            option2.setOnClickListener(v -> checkAnswer(2));
+            option3.setOnClickListener(v -> checkAnswer(3));
+            option4.setOnClickListener(v -> checkAnswer(4));
         } else {
-            Toast.makeText(this, "Quiz Completed!", Toast.LENGTH_LONG).show();
+            showResults();
         }
     }
 
-    private void checkAnswer(int selectedIndex) {
-        if (selectedIndex == correctAnswers[currentQuestion]) {
-            Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
+    private void checkAnswer(int selectedAnswer) {
+        if (selectedAnswer == questions[currentQuestionIndex].getCorrectAnswer()) {
+            correctAnswers++;
         } else {
-            Toast.makeText(this, "Wrong! Try again.", Toast.LENGTH_SHORT).show();
+            incorrectAnswers++;
         }
-        currentQuestion++;
-        loadQuestion();
+        currentQuestionIndex++;
+        loadNextQuestion();
+    }
+
+    private void showResults() {
+        Intent intent = new Intent(this, ResultActivity.class);
+        intent.putExtra("correctAnswers", correctAnswers);
+        intent.putExtra("incorrectAnswers", incorrectAnswers);
+        startActivity(intent);
+        finish();
     }
 }
