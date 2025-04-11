@@ -1,40 +1,25 @@
 package com.example.geographyquiz;
 
 public class Question {
-    private String question;
-    private String option1, option2, option3, option4;
-    private int correctAnswer;
+    private String questionText;
+    private String[] options;
+    private int correctIndex;
 
-    public Question(String question, String option1, String option2, String option3, String option4, int correctAnswer) {
-        this.question = question;
-        this.option1 = option1;
-        this.option2 = option2;
-        this.option3 = option3;
-        this.option4 = option4;
-        this.correctAnswer = correctAnswer;
+    public Question(String questionText, String[] options, int correctIndex) {
+        this.questionText = questionText;
+        this.options = options;
+        this.correctIndex = correctIndex;
     }
 
-    public String getQuestion() {
-        return question;
+    public String getQuestionText() {
+        return questionText;
     }
 
-    public String getOption1() {
-        return option1;
+    public String[] getOptions() {
+        return options;
     }
 
-    public String getOption2() {
-        return option2;
-    }
-
-    public String getOption3() {
-        return option3;
-    }
-
-    public String getOption4() {
-        return option4;
-    }
-
-    public int getCorrectAnswer() {
-        return correctAnswer;
+    public int getCorrectIndex() {
+        return correctIndex;
     }
 }

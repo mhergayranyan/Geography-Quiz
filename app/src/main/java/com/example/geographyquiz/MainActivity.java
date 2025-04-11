@@ -1,82 +1,105 @@
 package com.example.geographyquiz;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView questionText;
-    private Button option1, option2, option3, option4;
-    private int correctAnswers = 0;
-    private int incorrectAnswers = 0;
-    private int currentQuestionIndex = 0;
-    private Question[] questions = {
-            new Question("What is the capital of France?", "Paris", "Berlin", "Madrid", "Rome", 1),
-            new Question("Which country has the largest population?", "India", "USA", "China", "Brazil", 3)
-    };
+
+    private TextView questionText, timerText;
+    private Button[] optionButtons = new Button[4];
+
+    private List<Question> questionList;
+    private int currentIndex = 0;
+    private int correct = 0;
+    private int incorrect = 0;
+    private CountDownTimer countDownTimer;
+    private static final long TIME_PER_QUESTION = 10000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getWindow().getDecorView().setBackgroundColor(Color.BLACK);
-
         questionText = findViewById(R.id.questionText);
-        option1 = findViewById(R.id.option1);
-        option2 = findViewById(R.id.option2);
-        option3 = findViewById(R.id.option3);
-        option4 = findViewById(R.id.option4);
+        timerText = findViewById(R.id.timerText);
+        optionButtons[0] = findViewById(R.id.option1);
+        optionButtons[1] = findViewById(R.id.option2);
+        optionButtons[2] = findViewById(R.id.option3);
+        optionButtons[3] = findViewById(R.id.option4);
 
-        setOptionsStyle();
-        loadNextQuestion();
+        questionList = getQuestions();
+        showNextQuestion();
     }
 
-    private void setOptionsStyle() {
-        option1.setBackgroundColor(Color.parseColor("#800080")); // Purple
-        option2.setBackgroundColor(Color.WHITE);
-        option3.setBackgroundColor(Color.parseColor("#800080")); // Purple
-        option4.setBackgroundColor(Color.WHITE);
+    private List<Question> getQuestions() {
+        return new ArrayList<>(Arrays.asList(
+                new Question("What is the capital of France?", new String[]{"Berlin", "Madrid", "Paris", "Rome"}, 2),
+                new Question("Which country has this flag 🇯🇵?", new String[]{"China", "Japan", "South Korea", "Thailand"}, 1),
+                new Question("What is the capital of Canada?", new String[]{"Toronto", "Ottawa", "Vancouver", "Montreal"}, 1),
+                new Question("Which country has this flag 🇧🇷?", new String[]{"Argentina", "Brazil", "Mexico", "Chile"}, 1),
+                new Question("What is the capital of Australia?", new String[]{"Sydney", "Canberra", "Melbourne", "Brisbane"}, 1),
+                new Question("Which country has this flag 🇩🇪?", new String[]{"Germany", "Belgium", "Austria", "Switzerland"}, 0),
+                new Question("What is the capital of Italy?", new String[]{"Rome", "Milan", "Naples", "Venice"}, 0),
+                new Question("Which country has this flag 🇰🇷?", new String[]{"China", "South Korea", "Japan", "Philippines"}, 1),
+                new Question("What is the capital of Russia?", new String[]{"Moscow", "St. Petersburg", "Kazan", "Sochi"}, 0),
+                new Question("Which country has this flag 🇺🇸?", new String[]{"Canada", "UK", "USA", "Australia"}, 2)
+        ));
     }
 
-    private void loadNextQuestion() {
-        if (currentQuestionIndex < questions.length) {
-            Question q = questions[currentQuestionIndex];
-            questionText.setText(q.getQuestion());
-            option1.setText(q.getOption1());
-            option2.setText(q.getOption2());
-            option3.setText(q.getOption3());
-            option4.setText(q.getOption4());
-
-            option1.setOnClickListener(v -> checkAnswer(1));
-            option2.setOnClickListener(v -> checkAnswer(2));
-            option3.setOnClickListener(v -> checkAnswer(3));
-            option4.setOnClickListener(v -> checkAnswer(4));
-        } else {
-            showResults();
+    private void showNextQuestion() {
+        if (currentIndex >= questionList.size()) {
+            Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+            intent.putExtra("correct", correct);
+            intent.putExtra("incorrect", incorrect);
+            startActivity(intent);
+            finish();
+            return;
         }
-    }
 
-    private void checkAnswer(int selectedAnswer) {
-        if (selectedAnswer == questions[currentQuestionIndex].getCorrectAnswer()) {
-            correctAnswers++;
-        } else {
-            incorrectAnswers++;
+        Question currentQuestion = questionList.get(currentIndex);
+        questionText.setText(currentQuestion.getQuestionText());
+        String[] options = currentQuestion.getOptions();
+
+        for (int i = 0; i < 4; i++) {
+            optionButtons[i].setText(options[i]);
+            int finalI = i;
+            optionButtons[i].setOnClickListener(view -> {
+                if (finalI == currentQuestion.getCorrectIndex()) {
+                    correct++;
+                } else {
+                    incorrect++;
+                }
+                countDownTimer.cancel();
+                currentIndex++;
+                showNextQuestion();
+            });
         }
-        currentQuestionIndex++;
-        loadNextQuestion();
+
+        startTimer();
     }
 
-    private void showResults() {
-        Intent intent = new Intent(this, ResultActivity.class);
-        intent.putExtra("correctAnswers", correctAnswers);
-        intent.putExtra("incorrectAnswers", incorrectAnswers);
-        startActivity(intent);
-        finish();
+    private void startTimer() {
+        timerText.setText("10");
+        countDownTimer = new CountDownTimer(TIME_PER_QUESTION, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timerText.setText(String.valueOf(millisUntilFinished / 1000));
+            }
+
+            @Override
+            public void onFinish() {
+                incorrect++;
+                currentIndex++;
+                showNextQuestion();
+            }
+        }.start();
     }
 }
