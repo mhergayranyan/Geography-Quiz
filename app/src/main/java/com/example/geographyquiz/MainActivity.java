@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
         questionList = getQuestions();
         showNextQuestion();
+
+
+
     }
 
     private List<Question> getQuestions() {

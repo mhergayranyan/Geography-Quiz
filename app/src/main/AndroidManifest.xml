@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.geographyquiz">
 
@@ -10,21 +9,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GeographyQuiz">
 
-        <!-- Main Activity (The quiz happens here) -->
+        <!-- Login Activity (This will be the first screen the user sees) -->
         <activity
-            android:name=".MainActivity"
-            android:exported="true"> <!-- This is the entry point -->
+            android:name=".LoginActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <!-- Main Activity (The quiz happens here) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
         <!-- Result Activity (Shows the final results) -->
         <activity
             android:name=".ResultActivity"
-            android:exported="false" /> <!-- Not exported since it's internal -->
+            android:exported="false" />
+
+        <activity android:name=".StartActivity" />
 
     </application>
-
 </manifest>
