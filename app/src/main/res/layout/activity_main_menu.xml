@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    tools:context=".MainMenuActivity">
+
+    <Button
+        android:id="@+id/flags_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Flags Quiz"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/capitals_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Capitals Quiz"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/profile_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profile"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/settings_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Settings"/>
+
+</LinearLayout>

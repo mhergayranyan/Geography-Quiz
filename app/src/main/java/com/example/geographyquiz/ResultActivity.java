@@ -1,20 +1,34 @@
 package com.example.geographyquiz;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ResultActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        TextView resultText = findViewById(R.id.resultText);
+        TextView scoreTextView = findViewById(R.id.score_text);
+        Button finishButton = findViewById(R.id.finish_button);
 
-        int correct = getIntent().getIntExtra("correct", 0);
-        int incorrect = getIntent().getIntExtra("incorrect", 0);
+        int score = getIntent().getIntExtra("score", 0);
+        int total = getIntent().getIntExtra("total", 0);
 
-        resultText.setText("Correct: " + correct + "\nIncorrect: " + incorrect);
+        scoreTextView.setText("Your score: " + score + "/" + total);
+
+        finishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ResultActivity.this, MainMenuActivity.class));
+                finish();
+            }
+        });
     }
 }
